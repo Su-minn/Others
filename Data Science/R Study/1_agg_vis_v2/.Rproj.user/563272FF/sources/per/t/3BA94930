@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565586953090.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1411055385",
+    "id" : "3BA94930",
+    "lastKnownWriteTime" : 1565605595,
+    "last_content_update" : 1565605595919,
+    "path" : "C:/Users/Su-min Jeon/Desktop/1_agg_vis_v2/rscript/1_read_data.R",
+    "project_path" : "rscript/1_read_data.R",
+    "properties" : {
+        "cursorPosition" : "161,2",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

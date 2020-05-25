@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1567147974949.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "383097046",
+    "id" : "CE76E478",
+    "lastKnownWriteTime" : 1567154629,
+    "last_content_update" : 1567154629567,
+    "path" : "C:/Users/Su-min Jeon/Desktop/Study/Data Science/R Study/4_web_text/3_textmining.R",
+    "project_path" : "3_textmining.R",
+    "properties" : {
+        "cursorPosition" : "134,0",
+        "scrollLine" : "109"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

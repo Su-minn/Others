@@ -1,0 +1,249 @@
+##---------------------------##
+##    아무나를 위한 R abc    ##
+##                           ##
+## 임경덕(imkdoug@gmail.com) ##
+##---------------------------##
+
+
+  ## 주제 : 간단한 R 명령어 살펴보기
+
+
+    # 스크립트 실행(Run a script) 
+     ##  : Windows : 'Ctrl + Enter'
+     ##  : MAC     : 'Command + Enter'
+
+
+
+  # 숫자와 사칙연산
+  1+(2*3)/4-5
+
+  
+  # 문자열에는 따옴표
+  "d"
+  'd'
+  d 
+    ## Error: object 'd' not found ; 오류
+    ## 문자는 항상 따옴표를 붙임
+  
+  
+
+  # c( ) 함수의 문자 결합(concatenate)
+  c(1, 3, 10)
+  c('A', 'B', 'DDD', '123')
+  
+
+  # 다양한 수열
+  11:15
+  rep(3, 10)
+  seq(0, 10, 3)
+
+  
+  
+  # 대괄호를 활용한 인덱스
+  LETTERS
+  LETTERS[]
+  
+  
+    
+  # 다양한 논리연산
+  1:10 == 7
+  1:10 != 7
+  1:10 >= 7
+  1:10 %in% c(1,3,5,7,9)
+  
+  
+  
+  # '='을 활용한 저장
+  x = 1:5
+  x
+  
+  y = c('A', 'B', 'B', 'C', 'B')
+  y
+  
+  
+  
+  # factor( ) 함수로 범주형으로 변수 변환
+  factor(y)
+  y
+  
+  y = factor(y)
+  y
+  
+  
+  
+  # levels( )의 활용 
+  levels(y)
+  
+  levels(y) = c('4.0', '3.0', '2.0')
+  y
+    
+
+  
+
+  
+  
+  # 데이터 불러오기
+  read.csv('data/test.csv')
+    ## data 폴더에 있는 test.csv 불러와서 출력하기 
+  
+  
+  
+  # '='을 활용해서 저장하기 
+  test_data = read.csv('data/test.csv')
+
+
+  
+  # 데이터 샘플 살펴보기
+  head(test_data)
+  tail(test_data, n=10)
+    ## 첫 6개, 끝 10개 관측치만 콘솔창에서 보기
+  
+  
+  
+    
+  # 변수 이름 확인하기
+  names(test_data)
+    
+  
+  
+  # 관측치 수/ 변수 수 확인하기 
+  nrow(test_data)
+  ncol(test_data)
+    ## 행/관측치 수, 열/변수 수 확인
+  
+  
+  
+  
+  # 대괄호 인덱스로 부분 선택하기
+  test_data[ , ]
+  test_data[1, ]
+  test_data[c(1,3,5), ]
+    ## 관측치 선택
+  
+  
+  test_data[ , 1:3]
+    ## 변수 선택
+  
+  
+  
+  # $를 활용한 변수 선택 
+  test_data$age
+    ## 데이터이름$변수이름
+  
+  
+  
+  # 간단한 요약
+  mean(test_data$age)
+  summary(test_data$age)
+  
+
+  
+    
+  # $를 활용한 변수 추가
+  test_data$count
+  
+  test_data$count = 1:20
+  test_data
+  
+
+  
+  
+  # $를 활용한 변수 업데이트
+  test_data$count  
+  
+  test_data$count = test_data$count + 100
+  test_data
+
+
+  
+  
+  # install.pacakges( )를 활용한 패키지 설치 ----
+    ## R은 핵심적인 기능만 포함한 최소 설치
+    ## 이후 필요한 기능(패키지)을 다운로드/설치 후 불러와 사용
+  
+    
+  install.packages('openxlsx')
+    # openxlsx 패키지 설치(xlsx 파일 불러오기 가능)
+  
+  
+  
+  # library( )로 설치된 패키지 불러오기
+  library(openxlsx)
+  read.xlsx('data/test_xlsx.xlsx')
+  
+  
+  
+  
+## 아주 간단한 데이터 요약
+  
+  # 데이터 불러오기
+  scores = read.csv('data/StudentsPerformance.csv')
+  
+  
+  
+  # 데이터 확인하기
+  head(scores)
+  tail(scores)
+
+  nrow(scores)
+  ncol(scores)
+
+  names(scores)
+  
+  
+  
+  # 한 수치형 변수의 요약과 시각화
+  min(scores$math.score)
+  max(scores$math.score)
+  mean(scores$math.score)
+  median(scores$math.score)
+  
+  hist(scores$math.score)
+  
+  quantile(scores$math.score, 0:4/4)
+  boxplot(scores$math.score, range=100)
+  
+  
+  # 한 범주형 변수의 요약과 시각화
+  table(scores$gender)
+  
+  t_gender = table(scores$gender)
+  barplot(t_gender)
+
+  
+  t_race = table(scores$race.ethnicity)
+  t_race
+  barplot(t_race)
+  
+  
+  
+  
+  # 한 수치형 변수와
+  # 한 범주형 변수의 관계 요약과 시각화
+  aggregate(math.score ~ gender, data=scores, mean)
+  aggregate(reading.score ~ parental.level.of.education, data=scores, median)
+  
+  boxplot(math.score ~ gender, data=scores, range=100)  
+  boxplot(writing.score ~ gender, data=scores, range=100)  
+    
+  
+  
+  # 두 범주형 변수의 관계 요약과 시각화
+  table(scores$parental.level.of.education, scores$lunch)
+
+  t_2 = table(scores$parental.level.of.education, scores$lunch)
+  prop.table(t_2, 1)
+
+  heatmap(t_2, scale='none')
+  heatmap(prop.table(t_2, 1), scale='none')
+  
+      
+  
+  # 두 수치형 변수의 관계 요약
+  plot(scores$math.score, scores$writing.score)
+  plot(scores$math.score, scores$writing.score, col=scores$gender)
+  
+  cor(scores$math.score, scores$writing.score)
+  
+  
+# End of script

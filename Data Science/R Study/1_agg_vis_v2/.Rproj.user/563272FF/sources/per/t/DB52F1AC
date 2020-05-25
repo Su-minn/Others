@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565597817321.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2660713168",
+    "id" : "DB52F1AC",
+    "lastKnownWriteTime" : 1565605596,
+    "last_content_update" : 1565605596491,
+    "path" : "C:/Users/Su-min Jeon/Desktop/1_agg_vis_v2/rscript/3_ggplot2.R",
+    "project_path" : "rscript/3_ggplot2.R",
+    "properties" : {
+        "cursorPosition" : "201,2",
+        "scrollLine" : "176"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

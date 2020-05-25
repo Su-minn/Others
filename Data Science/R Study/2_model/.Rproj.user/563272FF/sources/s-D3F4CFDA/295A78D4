@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565759858334.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "295A78D4",
+    "lastKnownWriteTime" : 1565449924,
+    "last_content_update" : 1565761233103,
+    "path" : "C:/Users/Su-min Jeon/Desktop/2_model/rscript/1_review.R",
+    "project_path" : "rscript/1_review.R",
+    "properties" : {
+        "cursorPosition" : "137,0",
+        "scrollLine" : "112"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

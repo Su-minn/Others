@@ -1,0 +1,173 @@
+##--------------------------------------##
+##        아무나를 위한 R 세미나        ## 
+##                                      ##
+##      임경덕(imkdoug@gmail.com)       ##
+##--------------------------------------##
+
+
+ 
+  ## 주제 : 다양한 형식의 데이터 불러오기
+
+
+    # 스크립트 실행(Run a script) 
+     ##  Windows : 'Ctrl + Enter'
+     ##  MAC     : 'Command + Enter'
+
+
+
+
+##0 RStudio의 화면구성과 설정 ----
+
+  # 'Tools' → 'Global Options' → 'Appearance'
+
+
+
+
+##0 RStudio Project의 생성
+
+  # 'File' → 'New Project'
+
+
+
+
+  
+##1 read.csv( )를 활용한 csv파일 불러오기 ----
+  
+  # 작업 폴더 확인하기 
+  getwd()
+  
+    # 작업폴더 설정(Set Working Directory) : 'Ctrl/Command + Shift + h'
+      ## RStudio Menu ; Session -> Set Working Directory -> Choose...
+      ## setwd('Your Working Directory Address')
+
+
+
+  
+  # 데이터 불러오기
+  read.csv('data/test.csv')
+    ## 작업 폴더에 있는 test.csv 불러와서 출력하기 
+  
+
+  
+  
+  # '='을 활용해서 저장하기 
+  test_data = read.csv('data/test.csv')
+    ## 오른쪽 위 환경창에서 데이터 이름 클릭 
+
+  # View(pop_seoul)
+    ## 혹은 직접 View( )에 데이터를 넣고 실행
+  
+  
+  
+  
+    ## 인코딩 문제(feat. '한글이 깨져요') ----
+    read.csv('data/pop_seoul_euckr.csv')
+    read.csv('data/pop_seoul_utf8.csv')
+      ## 서울시 구/연령대별 인구 통계(2018년)
+      ## 인코딩 문제로 둘 중 하나는 정상, 하나는 에러 발생
+    
+    
+    
+    # 인코딩 지정
+    pop_seoul = read.csv('data/pop_seoul_euckr.csv', fileEncoding='euc-kr')
+    pop_seoul = read.csv('data/pop_seoul_utf8.csv', fileEncoding='UTF-8')
+      ## Windows 인코딩 : CP949/euc-kr
+      ## mac/Linux 인코딩 : UTF-8
+      
+      ## 같은 운영체제에서는 생략 가능 
+  
+
+  
+  
+    
+  # 데이터 샘플 살펴보기
+  head(pop_seoul)
+  tail(pop_seoul, n=10)
+    ## 첫 6개, 끝 10개 관측치만 콘솔창에서 보기
+  
+  
+  
+    
+  
+  # 데이터 특성 확인하기 
+  str(pop_seoul)
+    ## 데이터의 구조(Structure) 살펴보기
+
+  
+  names(pop_seoul)
+    ## 변수이름 확인하기
+  
+  
+  nrow(pop_seoul)
+  ncol(pop_seoul)
+    ## 행/관측치 수, 열/변수 수 확인
+  
+  
+  
+  # 변수 선택 
+  pop_seoul$구분
+    ## 데이터이름$변수이름
+  
+  
+  
+  
+
+  
+  
+  
+  ## (같이 실습) data 폴더에 있는 StudentsPerformance.csv 불러와서 sp로 저장하기 
+  
+  sp = read.csv('data/StudentsPerformance.csv')
+  
+  sp$math.score
+  mean(sp$math.score)
+  hist(sp$math.score)  
+  
+  # (같이 실습) summary( ) 함수의 활용
+  
+  summary(sp)
+  
+  
+  
+  
+  
+
+    
+##2 openxlsx 패키지를 활용한 엑셀파일 불러오기 
+
+
+  # install.pacakges( )를 활용한 패키지 설치 ----
+    ## R은 핵심적인 기능만 포함한 최소 설치
+    ## 이후 필요한 기능(패키지)을 다운로드/설치 후 불러와 사용
+  
+  install.packages('openxlsx')
+    # openxlsx 패키지 설치(xlsx 파일 불러오기 가능)
+  
+  
+  # library( )로 설치된 패키지 불러오기
+  library(openxlsx)
+  
+
+  
+  # 데이터 불러오기
+  SHEET1 = read.xlsx('data/test.xlsx', sheet=1)
+    ## xlsx 파일 경로와 시트 번호를 지정
+  SHEET1
+  
+  
+  
+  SHEET2 = read.xlsx('data/test.xlsx', sheet=2, startRow=3)
+    ## startRow= 옵션으로 데이터 시작 행번호 지정 가능
+  SHEET2
+  
+  
+  
+  SHEET3 = read.xlsx('data/test.xlsx', sheet=3, colNames=FALSE)
+    ## 첫 행이 변수이름이 아니라 관측치일때, colNames=FALSE 옵션 사용
+  SHEET3
+  
+  
+  
+  
+
+# End of script

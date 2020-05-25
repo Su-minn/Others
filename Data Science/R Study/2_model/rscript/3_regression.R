@@ -1,0 +1,379 @@
+ ##-----------------------------------##
+##  LG Data CAMP - 머신러닝의 활용   ##
+##                                   ##
+##    임경덕(imkdoug@gmail.com)      ##
+##-----------------------------------##
+
+
+  ## 주제 : 데이터 요약과 시각화 복습
+
+
+##0 패키지 불러오기
+
+  library(dplyr)
+  library(ggplot2)
+
+  
+  
+  
+##1 간단한 회귀모형 살펴보기
+
+  # 아빠키-아들키 데이터 불러오기
+  heights = read.csv('data/heights.csv')
+  heights %>% head()
+  heights %>% str()
+  
+
+  # 산점도 그리기
+  heights %>% 
+    ggplot(aes(x=father, y=son)) +
+    geom_point()+
+    geom_vline(xintercept=mean(heights$father)) + 
+    geom_hline(yintercept=mean(heights$father))
+
+  
+  # 상관계수 계산하기
+  heights %>% cor()
+  
+  
+  
+  
+  # lm()을 활용한 회귀모형의 적합(fitting)
+  lm_height = lm(son ~ father, data=heights)
+    ## lm( y ~ x1 + x2 + ... + xq)
+  
+  
+  # 적합된 모형 확인
+  summary(lm_height)
+    ## Coefficients:
+    ##             Estimate  
+    ## (Intercept) 86.07198 
+    ## father       0.51409 
+  
+    ## 아들키 = 86.07198 + 아빠키*0.51409
+  
+  
+  
+  
+  # predict( )를 활용한 예측
+  new_fathers = data.frame(father=seq(165,190,5))
+  new_fathers
+
+  predict(lm_height, new_fathers)  
+
+  
+  
+  
+  
+  
+##2 (실습) 보험료 청구금액 예측/설명 회귀 모형 적합
+      
+  # 데이터 불러오기
+  insurance = read.csv('data/insurance.csv')
+  insurance %>% head()
+  
+  new_cust  = read.csv('data/insurance_new.csv')
+  new_cust
+  
+
+  
+  # lm( )을 활용한 회귀 모형 적합
+    ## 모형식은 'charges ~ .'을 사용
+    ## . : 관심변수를 제외한 모든 변수
+  
+  # summary( )를 활용한 모형 확인
+  
+  # predict( )를 활용한 예측
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  # 모형과 요약의 비교
+  library(dplyr)
+  
+  insurance %>% 
+    group_by(smoker) %>% 
+    summarise(mean(charges))
+  
+  insurance %>% 
+    group_by(sex) %>% 
+    summarise(mean(charges))
+  
+  insurance %>% 
+    count(sex, smoker) %>% 
+    group_by(sex) %>% 
+    mutate(prop = n/sum(n))
+  
+  
+  
+  
+  
+  
+  
+  
+    # lm_ins = lm(charges ~ ., data=insurance)
+    # summary(lm_ins)
+    # predict(lm_ins, new_cust)
+  
+  
+  
+  
+  
+##3 로지스틱 회귀모형의 적합과 해석
+  
+  # 데이터 불러오기
+  graduate = read.csv('data/students.csv')
+  graduate %>% head()
+  graduate %>% str()
+    ## admit : 합격여부
+    ## gre   : GRE 시험 성적
+    ## gpa   : 학부 평점 평균
+    ## rank  : 전적 대학등급
+
+    # 변수 형식 변환
+    graduate$admit = as.factor(graduate$admit)
+    graduate$rank  = as.factor(graduate$rank)
+  
+  
+  new_stu = read.csv('data/students_new.csv')
+  new_stu %>% head()
+    new_stu$rank  = as.factor(new_stu$rank)
+    
+  
+    
+  # 간단한 데이터 요약
+  graduate %>% 
+    count(admit) %>% 
+    mutate(p = n/sum(n))
+    
+  graduate %>% 
+    group_by(admit) %>% 
+    summarise(M_gre = mean(gre), 
+              M_gpa = mean(gpa),
+              p_rank1 = mean(rank=='1'),
+              p_rank2 = mean(rank=='2'),
+              p_rank3 = mean(rank=='3'),
+              p_rank4 = mean(rank=='4'))
+    
+    ## 결론 : 합격한 사람들은 잘하는 사람들이다. 
+  
+  
+  
+  
+  # glm( )을 활용한 로지스틱 회귀모형 적합
+  glm_admit = glm(admit ~ ., data=graduate, family='binomial')
+    ## family='binomial' : 성공확률 32%
+  summary(glm_admit)
+  
+    ## + 회귀 계수 : 설명변수가 + -> 확률 +
+    ## - 회귀 계수 : 설명변수가 + -> 확률 -
+  
+    levels(graduate$admit)
+      ## R에서는 기본값으로 두번쨰 수준에 대한 확률 모형 적합
+    
+  
+    
+  # predict( )를 활용한 예측
+  new_stu
+  predict(glm_admit, new_stu, type='response')
+
+  
+  
+    
+
+  
+##4 (실습) 퇴직 예측 모형 개발
+  
+  # 데이터 불러오기
+  hr = read.csv('data/ibm_hr_sample.csv')
+  hr %>% head()
+    ## 예제 데이터셋에 포함되어 있으므로 설명은 생략
+    ## 관심변수 : Attrition(퇴직여부)
+  
+  hr %>% select(Attrition) %>% str()
+    ## 되도록 관심변수가 Factor 형식으로 지정되어 있는지 확인
+
+  
+    
+  # 필요없는 변수 제거
+  hr$EmployeeCount = NULL
+  hr$EmployeeNumber = NULL
+  hr$Over18 = NULL
+  hr$StandardHours = NULL
+
+  
+  
+  # (참고) 데이터 분할(Train:Test = 70:30)
+  set.seed(7030)
+  hr = hr %>% 
+    mutate(cv = ifelse(runif(nrow(hr))>=0.3, 'train', 'test'))
+    ## 방법1 : runif( )로 0~1 랜덤을 만들고 ifelse( )로 분할
+      hr %>% head()
+      hr %>% count(cv)
+  
+        
+      
+  set.seed(7030)
+  hr = hr %>% 
+    mutate(cv = sample(c('train','test'), nrow(hr), replace=T, prob=c(0.7, 0.3)))
+    ## 방법2 : sample( )의 7:3 확률 복원 추출 활용
+      hr %>% count(cv)
+      
+      
+  hr_train = hr %>% filter(cv=='train') %>% select(-cv)
+  hr_test  = hr %>% filter(cv=='test')  %>% select(-cv)
+
+  
+  
+  
+  #(실습) 로지스틱 회귀모형 적합 및 예측 활용
+  
+    ##1##
+    # glm( )과 hr_train을 활용하여
+    # Attrition을 나머지 모든 변수로 설명하는 로지스틱 회귀모형 적합
+  
+  
+    ##2##
+    # summary( )로 각 설명 변수의 효과 확인
+  
+  
+    ##3##
+    # predict( )로 hr_test에 대한 퇴직확률 예측
+    # 단, type='response' 옵션 활용
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+##5 (참고) 예측 확률의 활용
+  
+  # 모형 적합 및 예측값 계산
+  glm_exit = glm(Attrition ~ ., data=hr_train, family='binomial')
+  summary(glm_exit)
+  predict(glm_exit, hr_test, type='response')
+  
+  
+  
+  
+  # 퇴직 확률 변수 추가
+  hr_test_pred = hr_test %>% 
+      mutate(p_Attr = predict(glm_exit, hr_test, type='response'))
+  hr_test_pred %>% head()
+    
+
+  
+  # (활용1) 오분류율 계산
+  hr_test_pred %>% 
+    mutate(pred_Attr = ifelse(p_Attr>=0.5, 'Yes', 'No')) %>% 
+    select(Attrition, pred_Attr) %>% 
+    table()
+    
+    
+  hr_test_pred %>% 
+    mutate(pred_Attr = ifelse(p_Attr>=0.5, 'Yes', 'No'),
+           correct   = pred_Attr==Attrition) %>% 
+    count(correct) %>% 
+    mutate(rate = n/sum(n))
+    
+  
+  
+  
+  # (활용2) 확률 기준 등급화
+  hr_test_pred %>% 
+    arrange(p_Attr) %>% 
+    mutate( grade = ceiling(row_number()/nrow(hr_test_pred)*10)) %>%
+    mutate( grade = formatC(grade, width=2, flag='0')) %>% 
+    sample_n(20)
+    
+    ## 확률 오름차순으로 정렬
+    ## 전체 관측치 수를 고려해서 10개 등급화 
+
+  hr_test_pred %>% 
+    arrange(p_Attr) %>% 
+    mutate( grade = ceiling(row_number()/nrow(hr_test_pred)*10)) %>% 
+    mutate( grade = formatC(grade, width=2, flag='0')) %>% 
+    count(Department, grade) %>% 
+    group_by(Department) %>% 
+    mutate(p_grade = n/sum(n)) %>% 
+    ggplot(aes(x=Department, y=grade, fill=p_grade, label=n))+
+      geom_tile() +
+      scale_fill_distiller(palette='YlGnBu', direction=1) +
+      geom_text()
+
+  
+  
+  
+  
+##6 (참고) 검정(test)의 한계 ----
+  
+  # 데이터 생성
+  set.seed(100)
+  sample_grp_data = data.frame(
+    grp = rep(c('A','B','C'), each=10),
+    val = c(rnorm(10, 99, 3), rnorm(10, 100, 3), rnorm(10, 101, 3)))
+
+  sample_grp_data
+
+  
+  # 그룹별 평균 계산, 분산분석
+  sample_grp_data %>% 
+    group_by(grp) %>% 
+    summarise(M = mean(val))
+
+  summary(aov(val~grp, data=sample_grp_data))
+  
+    
+    ## 시각화
+    density_data = data.frame(x = seq(90, 110, 0.1))
+    
+    density_data %>% 
+      mutate(dx1 = dnorm(x,  99, 3),
+             dx2 = dnorm(x, 100, 3),
+             dx3 = dnorm(x, 101, 3)) %>% 
+      ggplot(aes(x=x)) +
+        geom_line(aes(y=dx1)) + 
+        geom_line(aes(y=dx2)) + 
+        geom_line(aes(y=dx3))
+    
+    
+
+  # 더 큰 데이터 생성
+  set.seed(100)
+  sample_grp_data2 = data.frame(
+    grp = rep(c('A','B','C'), each=100),
+    val = c(rnorm(100, 99, 3), rnorm(100, 100, 3), rnorm(100, 101, 3)))
+
+  sample_grp_data2
+
+  
+  # 그룹별 평균 계산, 분산분석
+  sample_grp_data2 %>% 
+    group_by(grp) %>% 
+    summarise(M = mean(val))
+
+  summary(aov(val~grp, data=sample_grp_data2))
+  
+        
+    ## "관측치만 충분히 많으면 작은 차이도 모두 유의하다"
+  
+  
+# End of script  

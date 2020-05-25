@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565773270108.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5F36E198",
+    "lastKnownWriteTime" : 1565504908,
+    "last_content_update" : 1565504908,
+    "path" : "C:/Users/Su-min Jeon/Desktop/2_model/rscript/5_clustering.R",
+    "project_path" : "rscript/5_clustering.R",
+    "properties" : {
+        "cursorPosition" : "7,1",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

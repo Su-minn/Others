@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1567145751413.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "461515535",
+    "id" : "8843535B",
+    "lastKnownWriteTime" : 1567154625,
+    "last_content_update" : 1567154625920,
+    "path" : "C:/Users/Su-min Jeon/Desktop/Study/Data Science/R Study/4_web_text/2_rvest.R",
+    "project_path" : "2_rvest.R",
+    "properties" : {
+        "cursorPosition" : "202,17",
+        "scrollLine" : "176"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1567150790407.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3785762005",
+    "id" : "1DCB0B65",
+    "lastKnownWriteTime" : 1567154629,
+    "last_content_update" : 1567154629774,
+    "path" : "C:/Users/Su-min Jeon/Desktop/Study/Data Science/R Study/4_web_text/4_RSelenium.R",
+    "project_path" : "4_RSelenium.R",
+    "properties" : {
+        "cursorPosition" : "317,2",
+        "scrollLine" : "296"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

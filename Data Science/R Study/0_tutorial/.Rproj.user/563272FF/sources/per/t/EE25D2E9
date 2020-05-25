@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1564320571680.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2710040492",
+    "id" : "EE25D2E9",
+    "lastKnownWriteTime" : 1563759992,
+    "last_content_update" : 1563759992,
+    "path" : "C:/Users/Su-min Jeon/Desktop/Data Science/R Study/0_tutorial/rscript.R",
+    "project_path" : "rscript.R",
+    "properties" : {
+        "cursorPosition" : "248,0",
+        "scrollLine" : "215"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

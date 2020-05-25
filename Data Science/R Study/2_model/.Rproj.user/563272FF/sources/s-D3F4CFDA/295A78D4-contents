@@ -1,0 +1,142 @@
+##--------------------------------------##
+##        아무나를 위한 R 세미나        ## 
+##                                      ##
+##      임경덕(imkdoug@gmail.com)       ##
+##--------------------------------------##
+
+
+ 
+  ## 주제 : 데이터 요약과 시각화 리뷰 
+
+
+    # 스크립트 실행(Run a script) 
+     ##  Windows : 'Ctrl + Enter'
+     ##  Mac     : 'Command + Enter'
+
+
+
+##1 예제 데이터 불러오기
+
+  checkout = read.csv('data/checkout_v2.csv', fileEncoding='UTF-8')
+  head(checkout)
+  nrow(checkout)
+    ## 2주간의 가상 카드사 데이터
+  
+  
+  customer = read.csv('data/customer_v2.csv', fileEncoding='UTF-8')
+  customer$gender = as.factor(customer$gender)
+  head(customer)
+  nrow(customer)
+
+  
+  
+  
+
+  
+##2 dplyr을 활용한 데이터 요약
+  
+  library(dplyr)
+  
+  
+  # gender별 회원수 계산
+  customer %>% 
+    count(gender)
+  
+  
+  
+  # (실습) category별 결제건수 계산
+  checkout %>% 
+    count(category)
+  
+  
+  
+  # cust_id별 결제건수 및 amount 합계 계산
+    ## 결제 건수는 n( ) 함수 활용
+  checkout %>%  
+    group_by(cust_id) %>% 
+    summarise(n=n(), total=sum(amount)) %>% 
+    mutate(ppp = total/n)
+  
+  
+  # (실습) category 결제건수 및 결제 회원수, amount 합계 계산
+    ## 결제 회원수는 n_distinct( ) 함수 활용
+  checkout %>%  
+    group_by(category) %>% 
+    summarise(n=n(), 
+              n_cust=n_distinct(cust_id), 
+              total=sum(amount))
+
+  
+  
+  # 연령대를 활용한 요약
+  customer %>% 
+    mutate( agegrp = cut(age, 
+                         breaks=c(0,20,25,30,35,40,45,50,55,60,65,100), 
+                         labels=c('0_','20_','25_','30_','35_','40_','45_','50_','55_','60_','65_'))) %>% 
+    count(gender, agegrp) %>% 
+    group_by(gender) %>% 
+    mutate(p = n/sum(n))
+  
+  
+  
+  
+##3 ggplot2를 활용한 시각화
+  
+  library(ggplot2)
+  
+  
+  # geom_bar( )를 활용한 막대그래프
+  customer %>% 
+    ggplot(aes(x=gender)) + 
+    geom_bar()
+
+  
+  # (실습) 5세단위 연령대 막대그래프
+  customer %>% 
+    mutate( agegrp = cut(age, 
+                         breaks=c(0,20,25,30,35,40,45,50,55,60,65,100), 
+                         labels=c('0_','20_','25_','30_','35_','40_','45_','50_','55_','60_','65_'))) %>% 
+    
+    ggplot(aes(x=agegrp)) + 
+    geom_bar()
+  
+  
+  
+  
+  # geom_col( )을 활용한 막대그래프
+  checkout %>% 
+    group_by(category) %>% 
+    summarise(m = mean(amount)) %>% 
+    ggplot(aes(x=category, y=m)) + 
+    geom_col()
+  
+  
+  # (실습) geom_col( )을 활용한 성별 5세 단위 연령대 막대그래프 
+  customer %>% 
+    mutate( agegrp = cut(age, 
+                         breaks=c(0,20,25,30,35,40,45,50,55,60,65,100), 
+                         labels=c('0_','20_','25_','30_','35_','40_','45_','50_','55_','60_','65_'))) 
+  
+  
+  
+  
+  
+  
+  # 트릭을 활용한 인구 분포 그래프
+  customer %>% 
+    mutate( agegrp = cut(age, 
+                         breaks=c(0,20,25,30,35,40,45,50,55,60,65,100), 
+                         labels=c('0_','20_','25_','30_','35_','40_','45_','50_','55_','60_','65_'))) %>% 
+    count(gender, agegrp) %>% 
+    mutate(n = ifelse(gender==1, n, -n)) %>% 
+    ggplot(aes(x=agegrp, y=n, fill=gender)) +
+    geom_col() + 
+    coord_flip()
+    
+  
+  
+
+    
+  
+
+# End of script

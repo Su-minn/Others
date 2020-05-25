@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565766237779.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "2A2F6F6",
+    "lastKnownWriteTime" : 1565568332,
+    "last_content_update" : 1565771576861,
+    "path" : "C:/Users/Su-min Jeon/Desktop/2_model/rscript/3_regression.R",
+    "project_path" : "rscript/3_regression.R",
+    "properties" : {
+        "cursorPosition" : "367,24",
+        "scrollLine" : "338"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

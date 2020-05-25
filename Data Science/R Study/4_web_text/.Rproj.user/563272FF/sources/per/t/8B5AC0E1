@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1567141902721.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4026326195",
+    "id" : "8B5AC0E1",
+    "lastKnownWriteTime" : 1567154625,
+    "last_content_update" : 1567154625740,
+    "path" : "C:/Users/Su-min Jeon/Desktop/Study/Data Science/R Study/4_web_text/1_kakao_ggmap.R",
+    "project_path" : "1_kakao_ggmap.R",
+    "properties" : {
+        "cursorPosition" : "241,4",
+        "scrollLine" : "226"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,289 @@
+##--------------------------------------##
+##        아무나를 위한 R 세미나        ## 
+##                                      ##
+##      임경덕(imkdoug@gmail.com)       ##
+##--------------------------------------##
+
+
+ 
+  ## 주제 : 의사결정 나무 모형의 활용
+
+
+##0 패키지 설치/불러오기
+
+  library(dplyr)
+  
+  install.packages('rpart')
+  install.packages('rpart.plot')
+  library(rpart)
+    ## CART 알고리즘 기반 의사결정 나무모형 적합
+  
+  library(rpart.plot)
+    ## 의사결정 나무모형의 시각화
+
+  
+  
+  
+##1 의사결정 나무(decision tree)
+
+  
+  # 예제 데이터 불러오기
+  private = read.csv('data/private_edu.csv', fileEncoding='UTF-8')
+  private = private %>% select(-8)
+  private %>% head()
+    ## 사교육비 실태조사
+    ## 출처 : 통계청 MDIS(mdis.kostat.go.kr)
+  
+  
+  
+  # 회귀 모형 적합
+  lm_private = lm(사교육비~., data=private)
+  summary(lm_private)
+  
+  
+  
+  
+  # rpart( )를 활용한 의사결정 나무 모형 적합
+  tree_private = rpart(사교육비~., data=private)
+  tree_private
+  
+  
+  # rpart.plot( )을 활용한 모형 시각화
+    ## 윈도우 : windows() ,  맥 : quartz()
+    
+    ## 새창이 뜨면 최대화 후 RStudio로 돌아오기
+  
+  rpart.plot(tree_private, cex=1)
+    ## cex=1 : 글자 크기를 기본 크기로 고정
+  
+  rpart.plot(tree_private, cex=1, fallen.leaves=FALSE)
+    ## fallen.leaves=FALSE : 최종노드를 바닥에 맞추지 않음
+  
+  
+  
+  
+  
+  
+  # cp( )를 활용한 복잡도 조정
+  tree_private = rpart(사교육비~., data=private, cp=0.001)
+  tree_private
+    ## cp : 기본값 0.01, 작을수록 더 복잡한 모형
+  
+    ## 이외에도 
+    ## minsplit(가지를 뻗기위한 최소한의 그룹크기), 
+    ## minbucket(가지를 뻗은 후의 최소한의 그룹크기)
+    ## maxdepth(최다 분기 횟수)등 설정 
+    ?rpart.control
+  
+  
+
+  # rpart.plot( )을 활용한 모형 시각화
+    ## windows(), quartz()
+  rpart.plot(tree_private, cex=1)
+    ## cex=1 : 글자 크기를 기본 크기로 고정
+  
+  
+  
+  
+  # printcp( ) / plotcp( )를 활용한 cp값 조정
+  printcp(tree_private)
+    ## nsplit : 가지분할 횟수
+    ##            -> nsplit+1=그룹수
+    ## rel error : 전체 평균 기준 오차(error) 대비 그룹 평균의 오차 
+    ## CP : 각 nsplit에 해당하는 cp 경계값
+  
+  
+  plotcp(tree_private)
+    ## 점선 기준선 왼쪽의 가장 큰 cp값 선택
+  
+  
+  
+  # prune( )을 활용한 가지치기
+  pruned = prune(tree_private, cp=0.002)
+  rpart.plot(pruned, cex=1)
+
+
+  
+  
+  
+  
+##2 (실습) 보험료 청구금액에 대한 나무 모형 적합
+
+  
+  # 데이터 불러오기
+  insurance = read.csv('data/insurance.csv')
+  insurance %>% head()
+  
+  new_cust  = read.csv('data/insurance_new.csv')
+  new_cust
+  
+
+  
+  # rpart( )를 활용한 의사결정 나무 모형 적합
+    ## cp값은 충분히 작게(0.001) 지정
+  # rpart.plot( )를 활용한 모형 시각화
+  # plotcp( )를 활용한 최적 cp값 확인
+  # prune( )을 활용한 가지치기 및 모형 시각화
+  # predict(모형, 새 데이터)를 활용한 예측
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    # tree_ins = rpart(charges~., data=insurance, cp=0.001)
+    # rpart.plot(tree_ins, cex=1)
+    # plotcp(tree_ins)
+    # tree_pruned = prune(tree_ins, cp=0.006)
+    # rpart.plot(tree_pruned, cex=1)
+    # predict(tree_pruned, new_cust)
+  
+  
+  
+  
+
+
+  
+##3 의사결정 나무를 활용한 판별(classification)
+  
+  # 데이터 불러오기
+  graduate = read.csv('data/students.csv')
+  graduate %>% head()
+  graduate %>% str()
+    ## admit : 합격여부
+    ## gre   : GRE 시험 성적
+    ## gpa   : 학부 평점 평균
+    ## rank  : 전적 대학등급
+
+    # 변수 형식 변환
+    graduate$admit = as.factor(graduate$admit)
+    graduate$rank  = as.factor(graduate$rank)
+  
+  
+  new_stu = read.csv('data/students_new.csv')
+  new_stu %>% head()
+    new_stu$rank  = as.factor(new_stu$rank)
+    
+  
+    
+  
+  # 전체 합격률 계산
+  graduate %>% 
+    count(admit) %>% 
+    mutate(p = n/sum(n))
+    ## 127/400 = 31.75%
+
+  
+  # 목적 : 조건에 따른 합격률/합격여부 예측 모형 적합
+  
+  
+  
+  # rpart( )를 활용한 모형 적합
+  tree_admit = rpart(admit~., data = graduate, method='class')
+  tree_admit
+    ## method='class' : 관심변수가 범주형임을 지정
+  
+  
+  
+  # rpart.plot( )을 활용한 시각화
+    ## windows(), quartz()
+  rpart.plot(tree_admit, cex=1)
+
+    
+  
+  # predict( )를 활용한 예측
+  predict(tree_admit, new_stu)
+  predict(tree_admit, new_stu, type='class')
+    ## type='class' : 예측된 확률 기준 높은 수준을 선택
+
+  
+  # "범주형 관심변수에 대해서는 plotcp( )/printcp( ) 활용 불가
+  # 나중에 오분류율 등을 활용해서 모형의 복잡도 선택
+  
+    
+  
+  
+  
+##4 (실습) 퇴직 예측 모형 개발
+  
+  # 데이터 불러오기
+  hr = read.csv('data/ibm_hr_sample.csv')
+  hr %>% head()
+    ## 관심변수 : Attrition(퇴직여부)
+  
+
+  # 필요없는 변수 제거
+  hr$EmployeeCount = NULL
+  hr$EmployeeNumber = NULL
+  hr$Over18 = NULL
+  hr$StandardHours = NULL
+
+  
+  
+  # 데이터 분할(Train:Test = 70:30)
+  set.seed(7030)
+  hr = hr %>% 
+    mutate(cv = sample(c('train','test'), nrow(hr), replace=T, prob=c(0.7, 0.3)))
+  
+  hr_train = hr %>% filter(cv=='train') %>% select(-cv)
+  hr_test  = hr %>% filter(cv=='test')  %>% select(-cv)
+
+  
+  
+  
+  #(실습) 의사결정 나무모형 적합 및 예측 활용
+  
+    ##1##
+    # rpart( )과 hr_train을 활용하여
+    # Attrition을 나머지 모든 변수로 설명하는 의사결정 나무모형 적합
+    # 단, cp는 기본값 0.01 활용
+  
+  
+    ##2##
+    # rpart.plot( )으로 모형 시각화 후 주요 변수 확인
+  
+  
+  
+    ##3##
+    # predict( )를 활용하여 hr_test에 대한 예측값 계산
+    
+  
+  
+  
+  
+  
+  
+
+##5 오분류율의 계산
+  
+  tree_exit = rpart(Attrition ~ ., data=hr_train, method='class')
+  tree_exit
+  rpart.plot(tree_exit, cex=1)
+  predict(tree_exit, hr_test)
+  
+  hr_test_pred = hr_test %>% 
+      mutate(pred_Attr = predict(tree_exit, hr_test, type='class'))
+  
+  hr_test_pred %>% 
+    mutate(correct   = pred_Attr==Attrition) %>% 
+    count(correct) %>% 
+    mutate(rate = n/sum(n))
+    
+    
+  
+  
+  
+    
+      
+# End of Script      

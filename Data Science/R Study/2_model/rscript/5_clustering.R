@@ -1,0 +1,178 @@
+##--------------------------------------##
+##        아무나를 위한 R 세미나        ## 
+##                                      ##
+##      임경덕(imkdoug@gmail.com)       ##
+##--------------------------------------##
+
+
+ 
+  ## 주제 : 군집화(clustering)
+  
+
+
+##0 군집화의 개념 이해
+    
+  # 예제 데이터 불러오기
+  consumption = read.csv('data/consumption.csv')
+  consumption
+  
+  
+  
+  
+  # 관측치 간 거리 계산
+  d_cons = dist(consumption)
+  d_cons
+  
+  
+  
+  # 계층적 군집화(hierarchical clustering)
+  hclust_cons = hclust(d_cons)
+  plot(hclust_cons)
+  cutree(hclust_cons, k=4)
+  
+
+  
+    
+  
+  
+      
+##0 k-평균 군집화(k-means Clustering)
+  ## http://en.wikipedia.org/wiki/K-means_clustering
+  ## http://ko.wikipedia.org/wiki/K-%ED%8F%89%EA%B7%A0_%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98 
+  ## y는 없지만, k개의 그룹을 가정하고
+  ## k개 평균 추정 -> 각 관측치를 가까운 그룹으로 할당
+  ## k개 평균 재추정 -> 관측치 그룹 할당을 반복
+        
+
+
+    
+
+
+        
+##1 instacart 고객 군집화 예제 
+    
+  # 데이터 확인하기
+  load(file='data/instacart.RData')
+  n_cust_cate %>% head()
+    ## 고객(user_id)별 카테고리별 상품 구매건수  
+  
+  
+  
+  # user_id는 별도로 저장 후 삭제
+  instacart_user_id = n_cust_cate$user_id
+  n_cust_cate$user_id = NULL
+  n_cust_cate %>% head()
+    
+  
+  
+  # kmeans( )를 활용한 군집화
+  set.seed(12345)
+  kmeans_cust = kmeans(n_cust_cate, centers=5)
+  kmeans_cust
+
+  
+  # 결과 확인
+  kmeans_cust$cluster
+  kmeans_cust$size
+  kmeans_cust$centers
+  
+    
+    # 군집 중심 시각화
+    library(dplyr)
+    library(ggplot2)
+    library(reshape2)
+    centers_cust = melt(kmeans_cust$centers)
+    centers_cust %>% 
+      ggplot(aes(Var1,Var2,fill=value))+
+      geom_tile()+
+      scale_fill_distiller(palette='Blues', direction=1)
+
+    
+    
+    
+  # 상대적인 비율을 활용한 군집화
+  p_cust_cate = as.data.frame(prop.table(as.matrix(n_cust_cate), 1))
+  ic_user_id = p_cust_cate$user_id
+  p_cust_cate$user_id = NULL
+  p_cust_cate %>%  head()
+    ## 고객별 카테고리별 주문 비중(모두 수치형 변수)
+  
+  
+  # kmeans( )를 활용한 군집화
+  set.seed(98765)
+  kmeans_cust_prop = kmeans(p_cust_cate, centers=5)
+  kmeans_cust_prop
+
+  
+  # 결과 확인
+  kmeans_cust_prop$size
+  kmeans_cust_prop$centers
+  
+    centers_cust_prop = melt(kmeans_cust_prop$centers)
+    centers_cust_prop %>% 
+      ggplot(aes(Var1,Var2,fill=value))+
+      geom_tile()+
+      scale_fill_distiller(palette='Blues', direction=1)
+
+    
+    
+
+        
+##3 (실습) instacart 상품 군집화
+  
+  # 데이터 살펴보기
+  n_prod_time %>% head()
+    ## 상품별 요일/시간대 판매 비중
+  
+  
+  # product_id는 따로 저장 후 변수 제거
+  
+  # set.seed( )로 시드 고정
+  # kmeans()로 7개 상품군으로 그룹화
+  # centers 속성 등 확인/ 시각화
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    # ic_prod_id = n_prod_time$product_id
+    # n_prod_time$product_id = NULL
+    # set.seed(13579)
+    # kmeans_prod = kmeans(n_prod_time, centers=7)
+    # kmeans_prod
+    # kmeans_prod$size
+    # kmeans_prod$centers
+    # 
+    #   centers_prod = melt(kmeans_prod$centers)
+    #   centers_prod %>% 
+    #     ggplot(aes(Var1,Var2,fill=value))+
+    #     geom_tile()+
+    #     scale_fill_distiller(palette='Blues', direction=1)
+
+    
+  
+##4 매출데이터를 활용한 군집화
+  
+  # 데이터 불러오기
+  checkout = read.csv('data/checkout_v2.csv', fileEncoding='UTF-8')
+  head(checkout)
+  
+  
+  # reshape2 패키지의 dcast( ) 함수 활용
+  library(reshape2)
+  agg_wide = dcast(checkout, cust_id ~ category, value.var='amount', fun=sum)
+  head(agg_wide)
+  
+  
+  #(실습) 고객별 카테고리별 구매건수 계산 후 kmeans( )를 활용한 군집화
+  
+  
+  
+  
+    
+# End of script

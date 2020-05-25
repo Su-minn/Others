@@ -1,0 +1,289 @@
+##--------------------------------------##
+##        아무나를 위한 R 세미나        ## 
+##                                      ##
+##      임경덕(imkdoug@gmail.com)       ##
+##--------------------------------------##
+
+
+ 
+  ## 주제 : 데이터 결합
+
+
+    # 스크립트 실행(Run a script) 
+     ##  Windows : 'Ctrl + Enter'
+     ##  Mac     : 'Command + Enter'
+
+
+
+
+##1 행 결합(관측치 추가)
+
+  # 예제 데이터 불러오기
+    ## 국토교통부 아파트 실거래가 데이터
+    ## 출처 : http://rtdown.molit.go.kr/
+
+  library(openxlsx)
+  GN = read.xlsx('data/아파트매매_2018_강남구.xlsx', sheet=1, startRow=17)
+  head(GN)
+  tail(GN)
+  
+  GD = read.xlsx('data/아파트매매_2018_강동구.xlsx', sheet=1, startRow=17)
+  head(GD)
+  tail(GD)
+    
+  SC = read.xlsx('data/아파트매매_2018_서초구.xlsx', sheet=1, startRow=17)
+  head(SC)
+  tail(SC)
+  
+  SP = read.xlsx('data/아파트매매_2018_송파구.xlsx', sheet=1, startRow=17)
+  head(SP)
+  tail(SP)
+  
+  
+  # 데이터 구성 확인
+  names(GN)
+  names(GD)
+  
+  str(GN)
+  str(GD)
+
+  
+  
+  # rbind( )를 활용한 행/관측치 결합
+  GN4 = rbind(GN, GD, SC, SP)
+
+  
+  
+  # 결합 데이터 확인 
+  nrow(GN4)
+
+  head(GN4)
+  tail(GN4)
+  
+
+  list.files('data', pattern = '구')
+  
+    ## (참고) 유용한 함수를 활용한 형식이 동일한 데이터 행결합
+    file_list = list.files('data', pattern='구.xlsx', full.names=T)
+    file_list
+    
+    data_list = lapply( file_list, function(x) read.xlsx(x, startRow=17))
+    data_list
+    
+    full_data = do.call(rbind, data_list)
+    nrow(full_data)
+  
+  
+    
+    
+    
+    
+    
+##2 열 결합
+  
+  # 가상의 예제 데이터 확인
+  my_data = data.frame(id = 1:5,
+                       gender = c('M','F','F','F','M'),
+                       age = seq(15, 35, 5))
+  
+  my_data
+  
+
+  # 추가 변수를 포함한 데이터
+  another_data = data.frame(region = c('Seoul','Seoul','Seoul','Busan','Busan'),
+                            amount = c(1,1,1,1,1))
+  
+  another_data
+  
+  
+  # cbind( )로 열/변수 결합
+  cbind(my_data, another_data)
+  
+    ## 일반적으로 잘 활용하지 않음
+    ## $를 활용한 변수 추가 혹은 key(id) 변수를 활용한 결합 활용
+  
+
+  my_data$age_grp = cut(my_data$age, 
+                        breaks=c(10,20,30,40), 
+                        include.lowest=TRUE, 
+                        right=FALSE,
+                        labels=c('10_19','20_29','30_39'))
+  my_data
+    ## cut( )을 활용한 연령대 변수 추가
+      ## breaks : 구간 경계값
+      ## include.lowest : 첫 경계값 포함 여부
+      ## right : 각 구간의 오른쪽 경계 포함 여부 
+      ## labels : 각 구간의 이름
+  
+  
+  
+  
+  
+
+      
+##3 merge( )로 데이터 결합하기 ----
+  
+  # 예제 데이터 불러오기
+  sales = read.csv('data/ex_sales.csv')
+  sales
+  
+  prod  = read.csv('data/ex_prod.csv')
+  prod
+  
+  
+  
+  # merge( )를 활용한 데이터 결합
+  merged = merge(sales, prod, by='PROD')
+    ## 기준변수가 같을 때는 "by="으로 한번에 지정 가능
+  
+  merged
+
+
+  #(실습) sales 데이터와 user 데이터를 결합
+  user = read.csv('data/ex_user.csv')
+  user
+
+  sales
+  
+  merged = merge(user, sales, by='USER')
+  merged %>% 
+  group_by(SEX) %>% 
+  summarise(sum(amount))
+  
+    
+
+##4 변수 형식 변환
+  
+  # 변수 형식 확인하기
+  str(GN4)
+  
+  
+  # 몇가지 형식 변환 예제
+  as.integer(GN4$건축년도)
+  
+  GN4$건축년도 = as.integer(GN4$건축년도)
+  GN4$`전용면적(㎡)` = as.numeric(GN4$`전용면적(㎡)`)
+  GN4$`거래금액(만원)`
+  
+  
+  str(GN4)
+  
+  # (같이 실습) as.factor( ) 함수로 시군구를 factor 형식(범주형)으로 변환하기
+  
+  GN4$시군구 = as.factor(GN4$시군구)
+  
+  
+  
+  
+
+##4.1 날짜 변수의 형식 변환
+  
+  # 예제 데이터 불러오기
+  weather = read.csv('data/weather_2017.csv')
+  head(weather)
+  str(weather)
+
+  
+  
+  # as.Date( )를 활용한 날짜변수 생성(character/Factor->Date)
+  head(weather)
+    ## 변수이름 : date
+  
+  class(weather$date)
+    ## Factor 형식
+  
+  as.Date(weather$date)
+    ## 형식 기본값 : 'YYYY-MM-DD'
+  
+  weather$date2 = as.Date(weather$date)
+  str(weather)
+  
+  
+  
+  
+  # strptime( )을 활용한 날짜 변수 변환
+  as.Date(weather$date, format='%Y-%m-%d')
+  strptime(weather$date, format='%Y-%m-%d')
+    ## 저장된 format을 지정
+    ## strptime : 날짜/시간 형식으로 변환
+  
+  
+  ?strptime
+    ## 활용가능한 형식의 확인
+    
+    ## %Y : 네 자리수 연도
+    ## %y : 두 자리수 연도
+    ## %m : 두 자리수 월(빈칸은 0 채움)
+    ## %d : 두 자리수 일(빈칸은 0 채움)
+    ## %e : 두 자리수 일
+  
+    ## %j : 일차 
+    ## %U : 주차 
+  
+    ## %H : 시
+    ## %M : 분
+    ## %S : 초
+  
+    ## %a : 요일(축약형)
+    ## %A : 요일
+    ## %u : 요일(1~7, 1:월)
+    ## %w : 요일(0~6, 0:일)
+  
+    ## %b : 월(축약형)
+    ## %B : 월
+  
+  
+  # 다양한 날짜 변수의 변환
+  dates = read.csv('data/dates.csv')
+  dates
+  
+  
+  # (실습) strptime( )으로 각 변수를 날짜/시간 형식으로 변환
+    ## 두번째 date2는 paste0( )로 일(day)을 붙인후 작업
+  
+  dates$date3 = as.Date(dates$date3, format='%m/%d/%Y')
+  class(dates$date3)
+  dates$date4 = strptime(dates$date4, format='%Y-%m-%d %H:%M:%S')
+  class(dates$date4)
+  str(dates)
+  
+
+  
+  # format( )을 활용한 날짜를 원하는 형식으로 변환(Date -> character)
+  temp_date = strptime(dates$date4, format='%Y-%m-%d %H:%M:%S')
+  str(temp_date)
+  temp_date
+  
+  
+  format(temp_date, format='%Y년 %m월')
+  format(temp_date, format='%A')
+    ## 형식을 지정
+  
+  
+  # (실습) 원하는 형식으로 변환
+    ## 연, 월, 일
+    ## 요일
+    ## 주차
+    ## 일차
+  
+  
+  
+##6 (실습) 요일별 매출 데이터 요약하기
+  
+  checkout = read.csv('data/checkout_v2.csv', fileEncoding='UTF-8')
+  customer = read.csv('data/customer_v2.csv', fileEncoding='UTF-8')
+  customer$gender = as.factor(customer$gender)
+
+
+  # checkout에서 datetime을 strptime( )으로 날짜 시간 형식으로 변경
+  
+  # format( )을 활용하여 요일 추출
+  
+  # merge( )를 활용하여 checkout과 customer를 결합
+  
+  # 연령대별 요일별 요약
+  
+  
+  
+ 
+# End of script

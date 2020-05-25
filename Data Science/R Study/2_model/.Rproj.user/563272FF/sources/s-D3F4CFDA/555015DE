@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565771996329.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "555015DE",
+    "lastKnownWriteTime" : 1565504910,
+    "last_content_update" : 1565504910,
+    "path" : "C:/Users/Su-min Jeon/Desktop/2_model/rscript/4_decision_tree.R",
+    "project_path" : "rscript/4_decision_tree.R",
+    "properties" : {
+        "cursorPosition" : "221,15",
+        "scrollLine" : "215"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

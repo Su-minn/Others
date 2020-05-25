@@ -1,0 +1,329 @@
+##--------------------------------------##
+##        아무나를 위한 R 세미나        ## 
+##                                      ##
+##      임경덕(imkdoug@gmail.com)       ##
+##--------------------------------------##
+
+
+ 
+  ## 주제 : 복잡한 웹 스크랩 
+
+  
+  
+##1 패키지 설치하기
+
+  install.packages('RSelenium')
+  library('RSelenium')
+
+  rD = rsDriver(browser='chrome', port=9516L, chromever = '76.0.3809.126')
+    ## Chrome 버전 꼭 확인!
+  
+  remDr = rD[['client']]
+
+
+  
+
+
+
+  
+##2 RSelenium을 활용한 복잡한 웹 스크랩 시연
+  
+  
+  # 
+  # 
+  #  # remDr$open()
+  # remDr$navigate('http://www.card-gorilla.com/search')
+  # 
+  # 
+  # gender = remDr$findElement('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/div[1]/ul[1]/li[1]/a')
+  # gender$clickElement()
+  # 
+  # age30 = remDr$findElement('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/div[1]/ul[2]/li[2]/a')
+  # age30$clickElement()
+  # 
+  # credit = remDr$findElement('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/div[2]/ul/li[1]/a')
+  # credit$clickElement()
+  # 
+  # miles = remDr$findElement('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/div[3]/ul/li[4]/a')
+  # miles$clickElement()
+  # 
+  # miles2 = remDr$findElement('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/div[4]/ul/li[2]/a')
+  # miles2$clickElement()
+  # 
+  # lounge = remDr$findElement('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/div[4]/ul/li[21]/a')
+  # lounge$clickElement()
+  # 
+  # searchbtn = remDr$findElement('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[2]/div/div/div[1]/div/div[2]/a[1]')
+  # searchbtn$clickElement()
+  # 
+  # 
+  # card_names = remDr$findElements('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/ul/li/div/div[2]/div[1]/p[1]')
+  # a = unlist(sapply(card_names, function(x) x$getElementText()))
+  # a
+  # 
+  # card_company = remDr$findElements('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/ul/li/div/div[2]/div[1]/p[2]')
+  # b = unlist(sapply(card_company, function(x) x$getElementText()))
+  # b
+  # 
+  # card_anfee = remDr$findElements('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/ul/li/div/div[2]/div[4]/p[1]')
+  # c = unlist(sapply(card_anfee, function(x) x$getElementText()))
+  # c
+  # 
+  # card_for = remDr$findElements('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/ul/li/div/div[2]/div[3]/p[1]/i')
+  # d = unlist(sapply(card_for, function(x) x$getElementText()))
+  # d
+  # 
+  # card_miles = remDr$findElements('xpath', '//*[@id="q-app"]/section/div[1]/section/div/article[1]/article/ul/li/div/div[2]/div[3]/p[1]/span/b')
+  # e = unlist(sapply(card_miles, function(x) x$getElementText()))
+  # e
+  # 
+  #     
+  # MILES = data.frame(names=a, company=b, annualfee=c, unit=d, miles=e)
+  # View(MILES)
+  # 
+  # 
+  # # remDr$open()
+  # 
+  # 
+  # 
+  # 
+  # # 로그인
+  # remDr$navigate('https://www.jobplanet.co.kr/users/sign_in')
+  #                     
+  # user_id = remDr$findElement('id', 'user_email')
+  # user_id$sendKeysToElement(list('imkdoug@gmail.com'))
+  # 
+  # pw = remDr$findElement('id', 'user_password')
+  # pw$sendKeysToElement(list('Qwas120614'))
+  # 
+  # btn= remDr$findElement('class', 'btn_sign_up')
+  # btn$clickElement()
+  # 
+  # 
+  # 
+  # # KB국민카드 페이지로 이동
+  # remDr$navigate('https://www.jobplanet.co.kr/companies/53661/reviews/케이비국민카드')
+  # 
+  # titles_raw = remDr$findElements('xpath', '//*[@id="viewReviewsList"]/div/div/div/section/div/div[2]/div/div[1]/h2')
+  # titles = sapply(titles_raw, function(x) x$getElementText())
+  # titles
+  # titles = unlist(titles)
+  # titles
+  # 
+  # pros_raw = remDr$findElements('xpath', '//*[@id="viewReviewsList"]/div/div/div/section/div/div[2]/div/dl/dd[1]/span')
+  # pros = sapply(pros_raw, function(x) x$getElementText())
+  # pros
+  # pros = unlist(pros)
+  # pros
+  # 
+  # cons_raw = remDr$findElements('xpath', '//*[@id="viewReviewsList"]/div/div/div/section/div/div[2]/div/dl/dd[2]/span')
+  # cons = sapply(cons_raw, function(x) x$getElementText())
+  # cons
+  # cons = unlist(cons)
+  # cons
+  # 
+  # toceo_raw = remDr$findElements('xpath', '//*[@id="viewReviewsList"]/div/div/div/section/div/div[2]/div/dl/dd[3]/span')
+  # toceo = sapply(toceo_raw, function(x) x$getElementText())
+  # toceo
+  # toceo = unlist(toceo)
+  # toceo
+  # 
+  # 
+  # jobplanet_data = data.frame(titles=titles,
+  #                   pros=pros,
+  #                   cons=cons,
+  #                   toceo=toceo, stringsAsFactors=FALSE)
+  # jobplanet_data
+  # 
+  # 
+  # 
+  # # 5개 페이지에 대해 반복
+  # for (i in 2:5){
+  #   url = paste0('https://www.jobplanet.co.kr/companies/53661/reviews/케이비국민카드?page=', i)
+  #   remDr$navigate(url)
+  # 
+  #   titles_raw = remDr$findElements('xpath', '//*[@id="viewReviewsList"]/div/div/div/section/div/div[2]/div/div[1]/h2')
+  #   titles = sapply(titles_raw, function(x) x$getElementText())
+  #   titles
+  #   titles = unlist(titles)
+  #   titles
+  # 
+  #   pros_raw = remDr$findElements('xpath', '//*[@id="viewReviewsList"]/div/div/div/section/div/div[2]/div/dl/dd[1]/span')
+  #   pros = sapply(pros_raw, function(x) x$getElementText())
+  #   pros
+  #   pros = unlist(pros)
+  #   pros
+  # 
+  #   cons_raw = remDr$findElements('xpath', '//*[@id="viewReviewsList"]/div/div/div/section/div/div[2]/div/dl/dd[2]/span')
+  #   cons = sapply(cons_raw, function(x) x$getElementText())
+  #   cons
+  #   cons = unlist(cons)
+  #   cons
+  #   
+  #   toceo_raw = remDr$findElements('xpath', '//*[@id="viewReviewsList"]/div/div/div/section/div/div[2]/div/dl/dd[3]/span')
+  #   toceo = sapply(toceo_raw, function(x) x$getElementText())
+  #   toceo
+  #   toceo = unlist(toceo)
+  #   toceo
+  #   
+  # 
+  #   jobplanet_temp = data.frame(titles=titles,
+  #                               pros=pros,
+  #                               cons=cons,
+  #                               toceo=toceo)
+  #   jobplanet_data = rbind(jobplanet_data, jobplanet_temp)
+  # 
+  #   cat(i, '번째 페이지 작업중...')
+  #   Sys.sleep( runif(1, 1,2))
+  # }
+  # 
+  # jobplanet_data
+
+  
+  
+##3 (함께 실습) kupid에서 학과별 개설과목 스크랩하기
+  
+  remDr$navigate('https://portal.korea.ac.kr/front/Intro.kpd')
+  
+  ## Chrome에서 위치 찾고 Copy -> Copy XPath
+  
+  
+  ##1. ID/PW 찾아서 값 입력하고 로그인 버튼 누르기
+  id_elem = remDr$findElement('xpath', '//*[@id="oneid"]')
+  id_elem$clickElement()
+  id_elem$sendKeysToElements(list('smsj68'))
+  
+  pw_elem = remDr$findElement('xpath', '//*[@id="loginform"]/span/input[2]')
+  pw_elem$clickElement()
+  pw_elem$sendKeysToElements(list('wjs0901!'))
+  
+  
+    
+  
+    # id_elem = remDr$findElement('xpath', '//*[@id="oneid"]')
+    # id_elem$clickElement()
+    # id_elem$sendKeysToElement(list('yourid'))
+    # 
+    # pw_elem = remDr$findElement('xpath', '//*[@id="loginform"]/span/input[2]')
+    # pw_elem$clickElement()
+    # pw_elem$sendKeysToElement(list('yourpw'))
+    # 
+    # 
+    # btn_elem = remDr$findElement('xpath', '//*[@id="loginform"]/input')
+    # btn_elem$clickElement()
+
+  
+  
+  
+  
+  ##2. 전공과목 페이지 찾기
+
+    ## 개발자 도구에서 Network 탭 클릭하기
+    ## -> "수업" 클릭하기
+    ## Network에서 아래쪽 초록색 막대가 긴 "LecMajorSub" 뭐시기 찾기
+  
+  url = 'https://infodepot.korea.ac.kr/lecture/LecFrame.jsp?url=LecMajorSub.jsp'
+  remDr$navigate(url)
+  
+  
+  
+    ## 프레임 옮기기
+  target_frame = remDr$findElement('name', 'ILec')
+  target_frame
+  remDr$switchToFrame(target_frame)
+  remDr$getPageSource()
+  
+  
+  
+  
+  
+  sem_elem= remDr$findElement('xpath', '/html/body/div/div[2]/form/div/div[1]/div/select[2]/option[1]')
+  sem_elem$clickElement()
+  
+  sem2_elem= remDr$findElement('xpath', '//*[@id="col"]/option[6]')
+  sem2_elem$clickElement()
+  
+  sem3_elem= remDr$findElement('xpath', '//*[@id="dept"]/option[2]')
+  sem3_elem$clickElement()
+  
+  btn_elem= remDr$findElement('xpath', '/html/body/div/div[2]/form/div[1]/div[1]/span[2]/input')
+  btn_elem$clickElement()
+  
+  
+  
+  
+  ## 2019년 1학기 이과대학 수학과 선택하고 검색버튼 누르기
+    # sel1_elem = remDr$findElement('xpath', '')
+    # sel3_elem = remDr$findElement('xpath', '')
+    # sel1_elem = remDr$findElement('xpath', '')
+  
+  ## 개발자도구에서 바로 복사하지 말고 펼친다음 원하는 항목 찾아서 복사하기
+  
+  sel2_elem = remDr$findElement('xpath', '')
+  sel2_elem$clickElement()
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    # sel2_elem = remDr$findElement('xpath', '/html/body/div/div[2]/form/div/div[1]/div/select[2]/option[1]')
+    # sel2_elem$clickElement()
+    # 
+    # sel4_elem = remDr$findElement('xpath', '//*[@id="col"]/option[6]')
+    # sel4_elem$clickElement()
+    # 
+    # sel5_elem = remDr$findElement('xpath', '//*[@id="dept"]/option[2]')
+    # sel5_elem$clickElement()
+    # 
+    # searchbtn_elem = remDr$findElement('xpath', '/html/body/div/div[2]/form/div/div[1]/span[2]/input')
+    # searchbtn_elem$clickElement()
+  
+  
+  
+  
+  ##3. 정보 확인하기
+  remDr$screenshot(file = 'capture1.png')
+    ## 스크린샷 저장하기
+  
+  lecture_cd = remDr$findElements('xpath', '/html/body/div/div[2]/form/table/tbody/tr/td[2]/a')
+  sapply(lecture_cd, function(x) x$getElementText())
+  sapply(lecture_cd, function(x) x$getElementAttribute('href'))
+  
+  
+  html_target = remDr$getPageSource()
+  
+  library(rvest)
+  
+  ## Mac에서는 바로 실행 
+  table_target = read_html(html_target[[1]], encoding = 'UTF-8') %>% html_table()
+  
+  ## Windows에서는 언어 변경
+  Sys.setlocale("LC_ALL", "English")  
+  table_target = read_html(html_target[[1]], encoding = 'UTF-8') %>% html_table()
+  Sys.setlocale("LC_ALL", "Korean")
+  
+  
+  result = table_target[[1]]
+  result
+  
+  doc = htmlParse(html_target[[1]], asText = T, encoding='euc-kr')
+  str(doc)
+  readHTMLTable(doc, )
+  html_target[[1]]
+  
+  
+  
+  
+  
+  
+# End of script  
